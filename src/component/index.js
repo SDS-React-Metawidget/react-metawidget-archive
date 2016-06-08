@@ -12,6 +12,15 @@ export default class Metawidget extends Component {
   static propTypes = {
     toInspect: PropTypes.object,
     config: PropTypes.object,
+    widgetBuilder: PropTypes.func,
+    widgetProcessors: PropTypes.arrayOf(PropTypes.func),
+    layout: PropTypes.func,
+  };
+
+  static defaultProps = {
+    widgetBuilder: builderFactory(toInspect),
+    widgetProcessors: [populateProcessor(toInspect), addIdProcessor(toInspect)],
+    layout: layoutWidget,
   };
 
   clearWidgets = noop;
@@ -19,14 +28,14 @@ export default class Metawidget extends Component {
   overriddenNodes = [];
 
   render() {
-    const { config, toInspect } = this.props;
+    const { config, toInspect, widgetBuilder, widgetProcessors, layout } = this.props;
     const container = [];
     const pipeline = new metawidget.Pipeline(container);
 
     pipeline.inspector = new metawidget.inspector.PropertyTypeInspector();
-    pipeline.widgetBuilder = builderFactory(toInspect);
-    pipeline.widgetProcessors = [populateProcessor(toInspect), addIdProcessor(toInspect)];
-    pipeline.layout = layoutWidget;
+    pipeline.widgetBuilder = widgetBuilder;
+    pipeline.widgetProcessors = widgetProcessors;
+    pipeline.layout = layout;
     pipeline.configure(config);
     const inspected = pipeline.inspect(toInspect);
     pipeline.buildWidgets(inspected, this);
