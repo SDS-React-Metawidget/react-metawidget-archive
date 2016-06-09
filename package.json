@@ -31,8 +31,10 @@
     "babel-preset-react": "^6.5.0",
     "babel-preset-stage-0": "^6.5.0",
     "chai": "^3.5.0",
+    "enzyme": "^2.3.0",
     "eslint": "^2.8.0",
     "eslint-config-nhardy": "^0.0.8",
+    "jsdom": "^9.2.1",
     "mocha": "^2.4.5",
     "webpack": "^1.13.0",
     "webpack-node-externals": "^1.2.0"
